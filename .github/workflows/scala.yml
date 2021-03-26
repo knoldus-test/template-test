@@ -1,0 +1,40 @@
+name: Scala CI
+env:
+  EB_PACKAGE_S3_BUCKET_NAME : "github-actions-10"
+  AWS_REGION_NAME           : "us-east-2"
+on:
+#  push:
+ #   branches: 
+  #    - githubaction
+  pull_request:
+    branches: 
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Run tests
+      env:
+        AWS_ACCESS_KEY: ${{ secrets.MY_AWS_ACCESS_KEY }}
+        AWS_SECRET_KEY: ${{ secrets.MY_AWS_SECRET_KEY }}
+      #run: bin/build.sh $AWS_ACCESS_KEY $AWS_SECRET_KEY  seds
+      run: echo $AWS_ACCESS_KEY
+    - name: repo name
+      #run: echo "(`echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}'`)  "
+      run:  echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}'
+    - name: actor name
+      #run:  echo "$GITHUB_REPOSITORY" | awk -F / '{print $1}'
+      run: echo"$GITHUB_ACTOR"
+
+    - name: echo remote url
+      #run:  echo"(`echo "$GITHUB_SERVER_URL"/"$GITHUB_REPOSITORY".git`)"
+      run: echo "$GITHUB_SERVER_URL"/"$GITHUB_REPOSITORY".git
+    
